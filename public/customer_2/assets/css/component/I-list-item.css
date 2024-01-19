@@ -1,0 +1,124 @@
+.I-list-item{
+
+}
+.I-list-item .list-item-title{
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 32px;
+	color: #666;
+	position: relative;
+	padding: 0 0 15px 0;
+	margin: 0 0 15px 0;
+}
+.I-list-item .list-item-title::before{
+	position: absolute;
+	width: 200px;
+	bottom: 0;
+	left: calc(50% - 100px);
+	content: "";
+	height: 2px;
+	background-color: #666;
+}
+.I-list-item .list-wrapper{
+	margin: 0 -10px;
+	overflow: hidden;
+}
+.I-list-item .list-wrapper .item-wrapper{
+	float: left;
+	width: 20%;
+	padding: 0 10px;
+	margin: 10px 0;
+}
+.I-list-item .list-item-footer{
+	text-align: center;
+	margin: 20px 0;
+}
+.I-list-item .list-item-footer a{
+	color: #3474d4;
+	font-weight: bold;
+}
+
+.item-block{
+	width: 100%;
+}
+.item-block .item-image{
+	padding: 0 0 130% 0; 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ccc;
+    display: block;
+}
+.item-block .item-title-wrapper{
+	padding: 10px;
+}
+.item-block .item-title-wrapper h2.item-title{
+	font-size: 14px;
+	text-align: center;
+	font-weight: 500;
+	color: #666;
+    overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+    margin: 0 0 10px 0;
+}
+.item-block .item-title-wrapper p.item-prices{
+	color: #333;
+	text-align: center;
+	font-size: 14px;
+	font-weight: 700;
+}
+.item-block .item-metadata-wrapper{
+	margin: 15px 0 0 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.item-block .item-metadata-wrapper .size-list{
+	display: flex;
+}
+.item-block .item-metadata-wrapper .size-list .size-item{
+	margin: 0 5px 0 0;
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+}
+.item-block .item-metadata-wrapper .color-list{
+	display: flex;
+}
+.item-block .item-metadata-wrapper .color-list .color-item{
+	margin: 0 0 0 5px;
+	width: 20px;
+	height: 20px;
+	border: 1px solid #ccc;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@media only screen and (max-width: 1600px){
+
+}
+@media only screen and (max-width: 1480px){ 
+
+}
+@media only screen and (max-width: 1280px){ 
+
+}
+@media only screen and (max-width: 1024px){
+
+}
+@media only screen and (max-width: 991px){ 
+	.I-list-item .list-wrapper .item-wrapper{ 
+		width: 33.3333%; 
+	}
+}
+@media only screen and (max-width: 767px){
+
+}
+@media only screen and (max-width: 575px){
+	.I-list-item .list-wrapper .item-wrapper{ 
+		width: 50%; 
+	}
+} 
+

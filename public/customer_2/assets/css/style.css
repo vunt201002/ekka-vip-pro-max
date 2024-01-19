@@ -1,0 +1,36 @@
+
+/* vendon */
+@import "vendon/owl.carousel.min.css";
+@import "vendon/aos.css";
+@import "vendon/bootstrap3.css";
+
+/* Overview */
+@import "component/style-overview.css";
+
+/* Component */
+@import "component/page-header.css";
+@import "component/page-main.css";
+@import "component/page-footer.css";
+
+
+@import "component/I-carousel.css"; 
+@import "component/I-list-item.css";   
+@import "component/I-news.css";   
+@import "component/I-category.css";   
+@import "component/I-product.css";   
+
+
+
+ 
+  
+ 
+/* Responsive */
+@import "responsive.css";
+
+
+
+
+
+
+
+
