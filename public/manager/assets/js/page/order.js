@@ -191,6 +191,7 @@ const View = {
                 })
                 $(".order-status").val(data.data_order[0].order_status)
                 if (data.shipper.length > 0) {
+                    $(".shipper-data p").remove()
                     $(".shipper-data").append(`<p>Họ và tên: ${data.shipper[0].name}</p>`)
                     $(".shipper-data").append(`<p>Địa chỉ: ${data.shipper[0].address}</p>`)
                     $(".shipper-data").append(`<p>Điện thoại: ${data.shipper[0].telephone}</p>`)
@@ -226,10 +227,14 @@ const View = {
 };
 (() => {
     View.init();
+    $(".shipper-wrapper").css({ "display": "none" })
+    $(".shipper-data").css({ "display": "none" })
 
 
     View.TabData.onChange("Pending", () => {
         getData(0)
+        $(".shipper-wrapper").css({ "display": "none" })
+        $(".shipper-data").css({ "display": "none" })
         localStorage.setItem("item_tab", 0);
     })
     View.TabData.onChange("Unfulfilled", () => {
@@ -291,7 +296,7 @@ const View = {
                     var data_shipper         = $('.order-shipper').val();
                     fd.append('data_id', data_id);
                     fd.append('data_status', data_status);
-                    if ($('.order-status').val() == 3) fd.append('data_shipper', data_shipper);
+                    if ($('.order-status').val() == 2) fd.append('data_shipper', data_shipper);
                     Api.Order.Update(fd)
                         .done(res => {
                             if (res.message == 500) {

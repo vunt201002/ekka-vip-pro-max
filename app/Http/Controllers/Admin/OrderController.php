@@ -45,7 +45,7 @@ class OrderController extends Controller
     public function get_one(Request $request){
         $data_order = $this->order->get_in_order($request->id);
         $data_sub = $this->order_detail->get_full_order($request->id);
-        
+        $shipper = [];
         if ($data_order[0]->shipper_id != null) {
             $shipper = $this->admin->get_one($data_order[0]->shipper_id);
         }
@@ -70,8 +70,8 @@ class OrderController extends Controller
                     return $this->order->send_response(500, null, null);
                 }
             }
-        }else if ($request->data_status == 3) {
             $this->order->update(["shipper_id" => $request->data_shipper], $request->data_id);
+        }else if ($request->data_status == 3) {
         }else if ($request->data_status == 4) {
 
         }else if ($request->data_status == 5) {
