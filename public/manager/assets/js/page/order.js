@@ -60,39 +60,39 @@ const View = {
         },
         init(){
             var row_table = [
-                    {
-                        title: 'ID',
-                        name: 'id',
-                        orderable: true,
-                        width: '5%',
-                    },
-                    {
-                        title: 'Thông tin',
-                        name: 'name',
-                        orderable: true,
-                    },
-                    {
-                        title: 'Đơn hàng',
-                        name: 'name',
-                        orderable: true,
-                    },
-                    {
-                        title: 'Ngày đặt',
-                        name: 'icon',
-                        orderable: true,
-                    },
-                    {
-                        title: 'Trạng thái',
-                        name: 'icon',
-                        orderable: true,
-                    },
-                    {
-                        title: 'Hành động',
-                        name: 'Action',
-                        orderable: true,
-                        width: '10%',
-                    },
-                ];
+                {
+                    title: 'ID',
+                    name: 'id',
+                    orderable: true,
+                    width: '5%',
+                },
+                {
+                    title: 'Thông tin',
+                    name: 'name',
+                    orderable: true,
+                },
+                {
+                    title: 'Đơn hàng',
+                    name: 'name',
+                    orderable: true,
+                },
+                {
+                    title: 'Ngày đặt',
+                    name: 'icon',
+                    orderable: true,
+                },
+                {
+                    title: 'Trạng thái',
+                    name: 'icon',
+                    orderable: true,
+                },
+                {
+                    title: 'Hành động',
+                    name: 'Action',
+                    orderable: true,
+                    width: '10%',
+                },
+            ];
             ViewIndex.table.init("#data-table", row_table);
         }
     },
@@ -163,6 +163,29 @@ const View = {
                 })
             },
             setVal(data){ 
+                // Hidden Status
+                let status_now = data['data_order'][0]["order_status"];
+                $("select.order-status option").css({
+                    "display": "none"
+                })
+                console.log(status_now);
+                if (status_now == 0) {
+                    $("select.order-status option").eq(1).css({ "display": "block" })
+                    $("select.order-status option").eq(2).css({ "display": "block" })
+                    $("select.order-status option").eq(5).css({ "display": "block" })
+                }else if (status_now == 1) {
+                    $("select.order-status option").eq(2).css({ "display": "block" })
+                    $("select.order-status option").eq(5).css({ "display": "block" })
+                }else if (status_now == 2) {
+                    $("select.order-status option").eq(3).css({ "display": "block" })
+                    $("select.order-status option").eq(5).css({ "display": "block" })
+                }else if (status_now == 3) {
+                    $("select.order-status option").eq(4).css({ "display": "block" })
+                    $("select.order-status option").eq(5).css({ "display": "block" })
+                }
+
+
+
                 $(".customer-name").html(data.data_order[0].username)
                 $(".customer-address").html(data.data_order[0].address)
                 $(".customer-email").html(data.data_order[0].email)

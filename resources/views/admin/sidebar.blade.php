@@ -47,12 +47,12 @@
                         <span>Giảm giá</span>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route("admin.voucher.index") }}" class=" waves-effect">
                         <i class="  feather-anchor  "></i>
                         <span>Voucher</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route("admin.order.index") }}" class=" waves-effect">
                         <i class="feather-truck"></i>
