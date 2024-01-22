@@ -107,10 +107,9 @@ const LayoutView = {
         let size = $(".product-size  li.active").text()
         let color = $(".product-color  li.active p").text()
 
-        // if (!size || !color) {
-        //     item.text("Bạn cần chọn size và màu")
-        // }else{
-        //     console.log(123);
+        if (!size || !color) {
+            item.text("Bạn cần chọn size và màu")
+        }else{
             if (card.split("-") > 0) {
                 hasId = card.split("-").includes(data_id)
                 if (!hasId) {
@@ -122,7 +121,7 @@ const LayoutView = {
                 item.text("✔ đã thêm")
                 localStorage.setItem("card", data_id); 
             }
-        // }
+        }
         LayoutView.Cart.update();
     })
     $(document).on('click', '.header-search-button', function() {
