@@ -73,7 +73,7 @@ class OrderController extends Controller
             $this->order->update(["shipper_id" => $request->data_shipper], $request->data_id);
         }else if ($request->data_status == 3) {
         }else if ($request->data_status == 4) {
-
+            $this->order->update(["status" => 2], $request->data_id);
         }else if ($request->data_status == 5) {
             $this->order_detail->update_status($request->data_id);
             $data_sub = $this->order_detail->get_full_order($request->data_id);
