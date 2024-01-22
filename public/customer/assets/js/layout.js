@@ -103,16 +103,24 @@ const LayoutView = {
         var card = localStorage.getItem("card"); 
         card = card == null ? "" : card;
         var data_id = item.attr("data-id")
-        if (card.split("-") > 0) {
-            hasId = card.split("-").includes(data_id)
-            if (!hasId) {
-                item.text("✔ đã thêm")
-                card = card + "-" + data_id; 
-                localStorage.setItem("card", card); 
-            }
+
+        let size = $(".product-size  li.active").text()
+        let color = $(".product-color  li.active p").text()
+
+        if (!size || !color) {
+            item.text("Bạn cần chọn size và màu")
         }else{
-            item.text("✔ đã thêm")
-            localStorage.setItem("card", data_id); 
+            if (card.split("-") > 0) {
+                hasId = card.split("-").includes(data_id)
+                if (!hasId) {
+                    item.text("✔ đã thêm")
+                    card = card + "-" + data_id; 
+                    localStorage.setItem("card", card); 
+                }
+            }else{
+                item.text("✔ đã thêm")
+                localStorage.setItem("card", data_id); 
+            }
         }
         LayoutView.Cart.update();
     })

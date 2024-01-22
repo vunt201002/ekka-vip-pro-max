@@ -20,7 +20,7 @@ const View = {
             $(".countdown-time").attr("data-countime", data.discount_time) 
 
             var size = JSON.parse(data.metadata).size.map(v => `<li><span>${v}</span></li>`).join("")
-            var color = JSON.parse(data.metadata).color.map(v => `<li><span style="background-color: ${v};"></span></li>`).join("")
+            var color = JSON.parse(data.metadata).color.map(v => `<li><span style="background-color: ${v};"><p style="visibility: hidden">${v}</p></span></li>`).join("")
             $(".product-size").append(size)
             $(".product-color").append(color)
             View.countdown.render()
