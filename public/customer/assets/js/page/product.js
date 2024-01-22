@@ -3,7 +3,7 @@ const View = {
         render(data){
             var cards = localStorage.getItem("card") == null ? "" : localStorage.getItem("card").split("-");
             // var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : data.prices - (data.prices*data.discount/100));
-            var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : data.discount);
+            var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : (data.prices - (data.prices / 100 * data.discount)));
             var sell_prices     = View.formatNumber(data.prices*data.discount/100);
             var discount        = data.discount;
             prices = "";
@@ -191,6 +191,17 @@ const View = {
             }, timeout);
         }
     }
+
+    $(document).on('click', '.product-size li', function() {
+        $(".product-size li").removeClass("active")
+        $(this).addClass("active")
+        $(".action-add-to-card").text("+ Giỏ hàng")
+    });
+    $(document).on('click', '.product-color li', function() {
+        $(".product-color li").removeClass("active")
+        $(this).addClass("active")
+        $(".action-add-to-card").text("+ Giỏ hàng")
+    });
 
     function getProduct(){
         Api.Product.GetOne(View.URL.get("id"))

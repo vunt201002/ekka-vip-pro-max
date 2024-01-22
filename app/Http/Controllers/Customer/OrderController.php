@@ -39,10 +39,12 @@ class OrderController extends Controller
         return $this->order_detail->send_response(200, $data, null);
     }
     public function create(Request $request){
+
+
         list( $user_id, $token) = explode('$', $request->cookie('_token_'), 2);
         $data_login     = $request->data_login;
 
-        $data_item      = explode("-",$request->data_item);
+        $data_item      = json_decode($request->data_item)->data;
         $data_quantity  = explode("-",$request->data_quantity);
         $data_prices    = $request->data_prices;
         
@@ -74,18 +76,25 @@ class OrderController extends Controller
         }
         $order_create = $this->order->create($data_order_create);
 
-        foreach ($data_item as $key => $item_id) {
-            $item = $this->product->get_one($item_id);
+        foreach ($data_item as $key => $value) {
+            $item = json_decode($value);
+            $item_id = $item->id;
+            $item_size = $item->size;
+            $item_color = $item->color;
+            $item_qty = $item->qty;
+            $item = $this->product->get_one($item_id); 
             
             if ($item[0]->discount == 0) {
                 $total_price = $data_quantity[$key] * $item[0]->prices;
             }else{
-                $total_price = $data_quantity[$key] * $item[0]->discount;
+                $total_price = $data_quantity[$key] * ($item[0]->prices - ($item[0]->prices / 100 * $item[0]->discount)) ;
             }
             $data_detail = [
                 "order_id"      => $order_create->id,
                 "product_id"    => $item_id,
-                "quantity"      => $data_quantity[$key],
+                "size"    => $item_size,
+                "color"    => $item_color,
+                "quantity"      => $item_qty,
                 "discount"      => $item[0]->discount,
                 "price"         => $item[0]->prices,
                 "total_price"   => $total_price,

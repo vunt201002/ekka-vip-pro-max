@@ -1,10 +1,10 @@
 const View = {
     Cart: {
-        render(data){
+        render(data, size, color){
             var image           = data.images.split(",")[0];
             var discount        = data.discount ?? 0;
             // var real_prices     = data.discount == 0 ? data.prices : data.prices - discount;
-            var real_prices     = data.discount == 0 ? data.prices : data.discount;
+            var real_prices     = data.discount == 0 ? data.prices : (data.prices - (data.prices / 100 * data.discount));
 
             prices = "";
                                                 
@@ -13,6 +13,8 @@ const View = {
 
             $(".cart-list").append(`
                 <tr data-id="${data.id}"
+                    data-size="${size}"
+                    data-color="${color}"
                     data-prices="${data.prices}" 
                     data-real-prices="${real_prices}"
                     data-discount="${discount}"
@@ -21,8 +23,15 @@ const View = {
                     data-total-discount="${discount*1}"
                     data-total-real-prices="${real_prices*1}"
                     data-quatity="1">
-                    <td data-label="Product" class="ec-cart-pro-name"><a href="/product?id=${data.id}">
-                        <img class="ec-cart-pro-img mr-4" src="/${image}" alt="" />${data.name}</a>
+                    <td data-label="Product" class="ec-cart-pro-name">
+                        <a href="/product?id=${data.id}" style="display: flex; align-items:center">
+                            <img class="ec-cart-pro-img mr-4" src="/${image}" alt="" />
+                            <p>
+                                <span style="display: block; margin: 0 0 10px 0">${data.name}</span>
+                                <span style="display: block; margin: 0 0 10px 0">Size: ${size}</span>
+                                <span style="display: block; margin: 0 0 10px 0">Màu: ${color}</span>
+                            </p>
+                        </a>
                     </td>
                     <td data-label="Price" class="ec-cart-pro-price">
                         ${prices}
@@ -115,8 +124,12 @@ const View = {
         $(document).on('click', `.remove-item`, function(event) {
             var father = $(this).parent().parent();
             var id = father.attr("data-id");
+            var size = father.attr("data-size");
+            var color = father.attr("data-color");
+            var qty = father.find(".input-qty").val();
+
             father.remove();
-            callback(id)
+            callback(id, size, color, qty)
         });
     },
     onCheckout(callback){
@@ -136,6 +149,30 @@ const View = {
             var discount    = father.attr("data-discount");
             var quantity    = father.find(".input-qty").val();
 
+            var id = father.attr("data-id");
+            var size = father.attr("data-size");
+            var color = father.attr("data-color");
+
+
+            var card = localStorage.getItem("card"); 
+            var cart_item = JSON.parse(card);
+            var new_card = []
+
+            cart_item.data.map(v => {
+                let data_v = JSON.parse(v);
+                if (data_v.id == id && data_v.size == size && data_v.color == color) {
+                    var new_array = `{"id": ${id}, "size": "${size}", "color": "${color}", "qty": "${quantity}"}`
+                    new_card.push(new_array)
+                }else{
+                    new_card.push(v)
+                }
+            })
+
+
+            cart_item.data = new_card; 
+            localStorage.setItem("card", JSON.stringify(cart_item)); 
+
+
             father.find(".data-total-prices").html(View.formatNumber(real_prices*quantity) + " đ")
             father.attr("data-quatity", quantity);
             father.attr("data-total-prices", prices*quantity);
@@ -151,10 +188,22 @@ const View = {
         getCart();
         getNewArrivals();
     }
-    View.onRemove((id) => {
-        var cart_item = localStorage.getItem("card").split("-").filter(item => item !== id).join("-");
-        localStorage.setItem("card", cart_item)
+    View.onRemove((id, size, color, qty) => {
+        let value_cart = `{"id": ${id}, "size": "${size}", "color": "${color}", "qty": "${qty}"}`
+        console.log(value_cart);
+
+        var card = localStorage.getItem("card"); 
+        var cart_item = JSON.parse(card);
+        const new_arr = cart_item.data.filter(item => item !== value_cart);
+
+        cart_item.data = new_arr;
+
+        localStorage.setItem("card", JSON.stringify(cart_item)); 
         View.Cart.setTotal();
+
+        // var cart_item = localStorage.getItem("card").split("-").filter(item => item !== id).join("-");
+        // localStorage.setItem("card", cart_item)
+        // View.Cart.setTotal();
     })
     View.onCheckout((total_prices) => {
         localStorage.removeItem("quantity"); 
@@ -167,15 +216,17 @@ const View = {
         localStorage.setItem("total_prices", total_prices);
     })
     function getCart(){
-        var cart_item = localStorage.getItem("card") == null ? "" : localStorage.getItem("card").split("-");
-        cart_item.map(v => {
-            getItem(v);
+        var card = localStorage.getItem("card"); 
+        var cart_item = JSON.parse(card);
+        cart_item.data.map(v => {
+            let data_v = JSON.parse(v);
+            getItem(data_v.id, data_v.size, data_v.color);
         })
     }
-    function getItem(id){
+    function getItem(id, size, color){
         Api.Product.GetOneItem(id)
             .done(res => {
-                View.Cart.render(res.data[0])
+                View.Cart.render(res.data[0], size, color)
             })
             .fail(err => {  })
             .always(() => { });

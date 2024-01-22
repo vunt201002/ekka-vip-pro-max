@@ -16,7 +16,8 @@ const LayoutView = {
         },
         update(){
             var card_data = localStorage.getItem("card")
-            var count = card_data == null || card_data == "" ? 0 : card_data.split("-").length;
+            let cart_json = JSON.parse(card_data);
+            var count = card_data == null || card_data == "" ? 0 : cart_json.data.length;
             $(".cart-count").html(count)
         }
     },
@@ -101,26 +102,43 @@ const LayoutView = {
     } 
     LayoutView.Cart.add_to_card("Add to card", (item) => {
         var card = localStorage.getItem("card"); 
-        card = card == null ? "" : card;
+        card = (card == null || card == '') ? '{ "data": [] }' : card;
         var data_id = item.attr("data-id")
+
+        let cart_json = JSON.parse(card);
 
         let size = $(".product-size  li.active").text()
         let color = $(".product-color  li.active p").text()
 
+
         if (!size || !color) {
             item.text("Bạn cần chọn size và màu")
         }else{
-            if (card.split("-") > 0) {
-                hasId = card.split("-").includes(data_id)
-                if (!hasId) {
-                    item.text("✔ đã thêm")
-                    card = card + "-" + data_id; 
-                    localStorage.setItem("card", card); 
-                }
-            }else{
+            let value_cart = `{"id": ${data_id}, "size": "${size}", "color": "${color}", "qty": "1"}`
+
+            if (cart_json.data.length == 0) {
+                cart_json.data.push(value_cart)
+                localStorage.setItem("card", JSON.stringify(cart_json)); 
                 item.text("✔ đã thêm")
-                localStorage.setItem("card", data_id); 
-            }
+                console.log(localStorage.getItem("card"));
+            }else{
+                let visible = false;
+                cart_json.data.map(v => {
+                    data_v = JSON.parse(v)
+                    if (data_v.color == color && data_v.size  == size && data_v.id ==  data_id) {
+                        visible = true
+                    }
+                }) 
+
+                if (visible) {  
+                    item.text("Đã có trong giỏ hàng")
+                }else{
+                    cart_json.data.push(value_cart)
+                    localStorage.setItem("card", JSON.stringify(cart_json)); 
+                    item.text("✔ đã thêm")
+                }
+            } 
+            console.log(cart_json);
         }
         LayoutView.Cart.update();
     })

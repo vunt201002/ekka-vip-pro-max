@@ -13,7 +13,7 @@ const View = {
                 var color = JSON.parse(v.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
-                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.discount);
+                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (v.prices - (v.prices / 100 * v.discount)));
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
                 $(".data-category-render").append(`
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content product-category-data" >
@@ -76,7 +76,7 @@ const View = {
                 var color = JSON.parse(v.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
-                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.discount);
+                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (v.prices - (v.prices / 100 * v.discount)));
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
                 $(".new-product").append(`
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" >
@@ -157,7 +157,7 @@ const View = {
                 var color = JSON.parse(v.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
-                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.discount);
+                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (v.prices - (v.prices / 100 * v.discount)));
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
                 $(".sale-product").append(`
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" >

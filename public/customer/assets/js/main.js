@@ -88,16 +88,16 @@ function ecCheckCookie()
     }
     else
     {
-        var themeColor = ecAccessCookie("themeColorCookie");
-        if (themeColor != "")
-        {
-            $('li[data-color = '+themeColor+']').toggleClass('active').siblings().removeClass('active');
-            $('li[data-color = '+themeColor+']').addClass('active');
+        // var themeColor = ecAccessCookie("themeColorCookie");
+        // if (themeColor != "")
+        // {
+        //     $('li[data-color = '+themeColor+']').toggleClass('active').siblings().removeClass('active');
+        //     $('li[data-color = '+themeColor+']').addClass('active');
             
-            if(themeColor != '01'){
-                $("link[href='assets/css/responsive.css']").before('<link rel="stylesheet" href="assets/css/skin-'+themeColor+'.css" rel="stylesheet">');
-            }
-        }
+        //     if(themeColor != '01'){
+        //         $("link[href='assets/css/responsive.css']").before('<link rel="stylesheet" href="assets/css/skin-'+themeColor+'.css" rel="stylesheet">');
+        //     }
+        // }
     }
 }
 

@@ -7,10 +7,10 @@ const View = {
                 var color = JSON.parse(v.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
-                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.discount);
+                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (v.prices - (v.prices / 100 * v.discount)));
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
                 $(".new-product").append(`
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" data-animation="fadeIn">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content"  >
                         <div class="ec-product-inner">
                             <div class="ec-pro-image-outer">
                                 <div class="ec-pro-image">
@@ -50,15 +50,15 @@ const View = {
     Quantity: localStorage.getItem("quantity"),
     TotalPrices: localStorage.getItem("total_prices"),
     Cart: {
-        render(data, key){
+        render(data, size, color){
             var image           = data.images.split(",")[0];
             var discount        = data.prices*data.discount/100;
             var real_prices     = data.discount == 0 ? data.prices : data.prices - discount;
-            var size = JSON.parse(data.metadata).size.map(v => `<li><a href="#" class="ec-opt-sz">${v}</a></li>`).join("")
-            var color = JSON.parse(data.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
+            // var size = JSON.parse(data.metadata).size.map(v => `<li><a href="#" class="ec-opt-sz">${v}</a></li>`).join("")
+            // var color = JSON.parse(data.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
             var discount = data.discount == 0 ? "" : `<span class="percentage">${data.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
             // var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : data.prices - (data.prices*data.discount/100));
-                var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : data.discount);
+                var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : (data.prices - (data.prices / 100 * data.discount)));
             var discount_value = data.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(data.prices)} đ</span>`
                 
             $(".cart-list").append(`
@@ -79,16 +79,10 @@ const View = {
                             </span>
                             <div class="ec-pro-option">
                                 <div class="ec-pro-color">
-                                    <span class="ec-pro-opt-label">Color</span>
-                                    <ul class="ec-opt-swatch ec-change-img">
-                                        ${color}
-                                    </ul>
+                                    Color: ${color}
                                 </div>
                                 <div class="ec-pro-size">
-                                    <span class="ec-pro-opt-label">Size</span>
-                                    <ul class="ec-opt-size">
-                                        ${size}
-                                    </ul>
+                                    Size: ${size}
                                 </div>
                             </div>
                         </div>
@@ -235,17 +229,17 @@ const View = {
             .always(() => { });
     })
     function getCart(){
-        var cart_item = View.Item;
-        if (cart_item) {
-            cart_item.split("-").map((v, k) => {
-                getItem(v, k);
-            })
-        }
+        var card = localStorage.getItem("card"); 
+        var cart_item = JSON.parse(card);
+        cart_item.data.map(v => {
+            let data_v = JSON.parse(v);
+            getItem(data_v.id, data_v.size, data_v.color);
+        })
     }
-    function getItem(id, key){
+    function getItem(id, size, color){
         Api.Product.GetOneItem(id)
             .done(res => {
-                View.Cart.render(res.data[0], key)
+                View.Cart.render(res.data[0], size, color)
             })
             .fail(err => {  })
             .always(() => { });

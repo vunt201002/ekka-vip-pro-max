@@ -203,7 +203,7 @@ const View = {
                     $(".data-list")
                         .append(`<tr>
                                     <td>${v.product_id}</td>
-                                    <td>${v.name}</td>
+                                    <td>${v.name} - Size: ${v.size} - Color: ${v.color}</td>
                                     <td>${v.quantity}</td>
                                     <td>${v.price}</td>
                                     <td>${v.discount} %</td>

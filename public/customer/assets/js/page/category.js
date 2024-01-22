@@ -6,7 +6,7 @@ const View = {
             data.map(v => {
                 var image           = v.images.split(",")[0];
                 // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
-                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.discount);
+                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (data.prices - (data.prices / 100 * data.discount)));
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
                 var size = JSON.parse(v.metadata).size.map(v => `<li><a href="#" class="ec-opt-sz">${v}</a></li>`).join("")
