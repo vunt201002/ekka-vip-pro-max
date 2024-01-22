@@ -115,6 +115,7 @@ const View = {
 	                "badge-warning badge-pill",
 	                "badge-secondary badge-pill",
 	                "badge-info badge-pill",
+	                "badge-info badge-pill",
 	                "badge-success badge-pill",
 	                "badge-danger badge-pill",
 	            ];
@@ -122,6 +123,7 @@ const View = {
 	                "Chờ xử lí",
 	                "Chưa hoàn thiện",
 	                "Đã hoàn thiện",
+	                "Đang giao hàng",
 	                "Đã giao hàng",
 	                "Hoàn trả",
 	            ];
