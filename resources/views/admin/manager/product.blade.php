@@ -103,7 +103,7 @@
                     <div class="tab-pane fade" id="product-edit-option">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
+                                {{-- <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="form-group">
                                             <label class="font-weight-semibold">Size</label>
@@ -136,7 +136,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                         <div class="form-group image-select-group">   
@@ -169,9 +169,66 @@
                     </div>
                 </div>
             </div>
+
+            <div class="main-tab" tab-name="Size" id="tab-size">
+                <div class="error-log"></div> 
+                <div class="tab-content m-t-15"> 
+                    <div class="card col-md-6 offset-3">
+                        <div class="card-body">
+                            <input type="hidden" class="product-id">
+                            <h4>Tạo bản sao</h4>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label class="font-weight-semibold" for="productTrademark">Size</label>
+                                    <select class="custom-select data-size" id="productTrademark">
+
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label class="font-weight-semibold" for="productTrademark">Màu</label>
+                                    <select class="custom-select data-color" id="productTrademark">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="m-t-15 m-b-15 d-flex justify-content-center">
+                                <button class="btn btn-primary push-data" atr="CreateSize">
+                                    <i class="anticon anticon-save"></i>
+                                    <span>Thêm phân loại</span>
+                                </button>
+                                <button class="btn btn-defaul m-l-5 main-tab-close">
+                                    <span>Hủy</span>
+                                </button>
+                            </div>
+                            <table class="size-table">
+                                <tr>
+                                    <th>Size</th>
+                                    <th>Màu</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<style>
+table.size-table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table.size-table td, 
+table.size-table th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+ 
+</style>
 
 @endsection()
 

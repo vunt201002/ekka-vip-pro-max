@@ -21,7 +21,7 @@ class Product extends Migration
             $table->string('slug');
             $table->longtext('images');
             $table->longtext('banner');
-            $table->longtext('metadata');
+            // $table->longtext('metadata');
             $table->longtext('description')->nullable();
             $table->longtext('detail')->nullable();
             $table->integer('prices');

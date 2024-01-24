@@ -17,6 +17,7 @@ class Warehouse extends Migration
             $table->increments('id');
             $table->Integer('product_id');
             $table->Integer('quantity');
+            $table->Integer('pending')->default(1);
             $table->string('status')->nullable();
             $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(\DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

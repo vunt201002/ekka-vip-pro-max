@@ -29,6 +29,20 @@
                         <span>Danh mục</span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ route("admin.size.index") }}" class=" waves-effect">
+                        <i class=" feather-list "></i>
+                        <span>Size</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route("admin.color.index") }}" class=" waves-effect">
+                        <i class=" feather-list "></i>
+                        <span>Color</span>
+                    </a>
+                </li> 
                 <li>
                     <a href="{{ route("admin.trademark.index") }}" class=" waves-effect">
                         <i class=" feather-list "></i>

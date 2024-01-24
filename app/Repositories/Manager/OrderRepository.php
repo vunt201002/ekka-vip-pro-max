@@ -22,12 +22,19 @@ class OrderRepository extends BaseRepository implements RepositoryInterface
         $sql = " SELECT order_detail.*, 
                         product.name, 
                         product.id as product_id,
-                        warehouse.quantity as warehouse_quatity
+                        product_detail.id as product_full,
+                        warehouse.quantity as warehouse_quatity, size.name as size_name, color.name as color_name
                 FROM order_detail
+                LEFT JOIN product_detail
+                ON product_detail.id = order_detail.product_id
                 LEFT JOIN product
-                ON product.id = order_detail.product_id
+                ON product.id = product_detail.product_id
+                LEFT JOIN size
+                ON size.id = product_detail.size_id
+                LEFT JOIN color
+                ON color.id = product_detail.color_id
                 LEFT JOIN warehouse
-                ON product.id = warehouse.product_id
+                ON product_detail.id = warehouse.product_id
                 WHERE order_id = ".$id;
         return DB::select($sql);
     }
@@ -122,8 +129,10 @@ class OrderRepository extends BaseRepository implements RepositoryInterface
                         product.name, 
                         product.id as product_id 
                 FROM order_detail
+                LEFT JOIN product_detail
+                ON product_detail.id = order_detail.product_id
                 LEFT JOIN product
-                ON product.id = order_detail.product_id
+                ON product.id = product_detail.product_id
                 WHERE order_id = ".$id;
         return DB::select($sql);
     }

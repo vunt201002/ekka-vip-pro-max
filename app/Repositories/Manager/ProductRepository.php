@@ -59,6 +59,16 @@ class ProductRepository extends BaseRepository implements RepositoryInterface
         DB::select($sql);
     }
     
+    public function get_size($id){
+        $sql = "SELECT product_detail.*, size.name as size_name, color.name as color_name, color.hex as color_hex
+                    FROM product_detail
+                    LEFT JOIN size
+                    ON size.id = product_detail.size_id
+                    LEFT JOIN color
+                    ON color.id = product_detail.color_id
+                    WHERE product_detail.product_id = ".$id;
+        return DB::select($sql);
+    }
 
 
     // Customer

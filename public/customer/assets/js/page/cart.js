@@ -68,14 +68,13 @@ const View = {
         renderNew(data){
             data.map(v => {
                 var image           = v.images.split(",")[0];
-                var size = JSON.parse(v.metadata).size.map(v => `<li><a href="#" class="ec-opt-sz">${v}</a></li>`).join("")
-                var color = JSON.parse(v.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
+
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
                 var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.discount);
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
                 $(".new-product").append(`
-                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" data-animation="fadeIn">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" >
                         <div class="ec-product-inner">
                             <div class="ec-pro-image-outer">
                                 <div class="ec-pro-image">
@@ -91,19 +90,7 @@ const View = {
                                     ${discount_value}
                                     <span class="new-price">${real_prices} đ</span>
                                 </span>
-                                <div class="ec-pro-option">
-                                    <div class="ec-pro-color">
-                                        <span class="ec-pro-opt-label">Color</span>
-                                        <ul class="ec-opt-swatch ec-change-img">
-                                            ${color}
-                                        </ul>
-                                    </div>
-                                    <div class="ec-pro-size">
-                                        <span class="ec-pro-opt-label">Size</span>
-                                        <ul class="ec-opt-size">
-                                            ${size}
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>`)

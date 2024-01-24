@@ -81,6 +81,18 @@ class OrderController extends Controller
             $item_id = $item->id;
             $item_size = $item->size;
             $item_color = $item->color;
+
+            $size_item =  DB::table('product_detail')
+                ->select("product_detail.*", "color.name as color_name", "size.name as size_name")
+                ->leftjoin("color", "color.id", "=", "color_id")
+                ->leftjoin("size", "size.id", "=", "size_id")
+                ->where([
+                    ["product_detail.product_id", "=", $item_id],
+                    ["size.name", "=", $item_size],
+                    ["color.name", "=", $item_color]
+                ])
+                ->first(); 
+
             $item_qty = $item->qty;
             $item = $this->product->get_one($item_id); 
             
@@ -91,9 +103,7 @@ class OrderController extends Controller
             }
             $data_detail = [
                 "order_id"      => $order_create->id,
-                "product_id"    => $item_id,
-                "size"    => $item_size,
-                "color"    => $item_color,
+                "product_id"    => $size_item->id,
                 "quantity"      => $item_qty,
                 "discount"      => $item[0]->discount,
                 "price"         => $item[0]->prices,

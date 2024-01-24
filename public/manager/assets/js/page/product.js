@@ -1,11 +1,8 @@
 const View = {
+    Size: [],
+    Color: [],
     table: {
         __generateDTRow(data){
-            var metadata = JSON.parse(data.metadata);
-            var meta_string = "";
-            for (const [key, value] of Object.entries(metadata)) {
-                meta_string += `<p>${key}: ${value.map(v => `<span class="meta-item-table">${v}</span>`).join("")}</p>`
-            } 
             return [
                 `<div class="id-order">${data.id}</div>`,
                 data.name,
@@ -16,9 +13,9 @@ const View = {
                 data.images == "" ? null : data.images.split(",").map(v => {
                     return `<div class="image-table-preview" style="background-image: url('/${v}')"></div>`
                 }).join(""),
-                meta_string,
                 `<label class="switch" data-id="${data.id}" data-status="${data.status == '1' ? '0' : '1'}" atr="Status"> <span class="slider round ${data.trending == '1' ? 'active' : ''}"></span> </label>`,
-                `<div class="view-data modal-control main-tab-control" style="cursor: pointer" atr="View" data-id="${data.id}"><i class="feather-eye"></i></div>
+                `<div class="view-data modal-control main-tab-control" style="cursor: pointer" atr="Add" data-id="${data.id}"><i class="fas fa-plus"></i></div>
+                <div class="view-data modal-control main-tab-control" style="cursor: pointer" atr="View" data-id="${data.id}"><i class="feather-eye"></i></div>
                 <div class="view-data modal-control" style="cursor: pointer" atr="Delete" data-id="${data.id}"><i class="feather-trash"></i></div>`
             ]
         },
@@ -51,12 +48,6 @@ const View = {
                     {
                         title: 'Hình ảnh',
                         name: 'name',
-                        orderable: true,
-                        width: '20%',
-                    },
-                    {
-                        title: 'Metadata',
-                        name: 'icon',
                         orderable: true,
                         width: '20%',
                     },
@@ -217,18 +208,18 @@ const View = {
             ViewIndex.summerNote.update(`.product-detail`, data.detail);
             data.images == "" ? null : ViewIndex.multiImage.setVal(data.images);
 
-            var metadata = JSON.parse(data.metadata);
-            for (const [key, value] of Object.entries(metadata)) {
-                if (key == "size") {
-                    $(`.metadata-render[data-name=${key}]`).append(
-                        value.map(v => `<div class="metadata-item data-size" data-value="${v}"><div class="remove-item"><i class="far fa-times-circle"></i></div>${v}</div>`).join("")
-                    )
-                }else if (key == "color"){
-                    $(`.metadata-render[data-name=${key}]`).append(
-                        value.map(v => `<div class="metadata-item data-color" data-value="${v}" style="background-color: ${v}"><div class="remove-item"><i class="far fa-times-circle"></i></div></div>`).join("")
-                    )
-                }
-            }
+            // var metadata = JSON.parse(data.metadata);
+            // for (const [key, value] of Object.entries(metadata)) {
+            //     if (key == "size") {
+            //         $(`.metadata-render[data-name=${key}]`).append(
+            //             value.map(v => `<div class="metadata-item data-size" data-value="${v}"><div class="remove-item"><i class="far fa-times-circle"></i></div>${v}</div>`).join("")
+            //         )
+            //     }else if (key == "color"){
+            //         $(`.metadata-render[data-name=${key}]`).append(
+            //             value.map(v => `<div class="metadata-item data-color" data-value="${v}" style="background-color: ${v}"><div class="remove-item"><i class="far fa-times-circle"></i></div></div>`).join("")
+            //         )
+            //     }
+            // }
         },
         getVal(){
             var fd = new FormData();
@@ -244,7 +235,7 @@ const View = {
             var data_detail         = $(".product-detail").val();
             var data_images         = $(".product-images")[0].files;
             var data_banner         = $(".product-banner")[0].files;
-            var data_metadata       = JSON.stringify(View.mainTab.metadata.getVal());
+            // var data_metadata       = JSON.stringify(View.mainTab.metadata.getVal());
  
             var data_images_preview = [];
             $(`.main-body`).find('.image-preview-item.image-load-data').each(function(index, el) {
@@ -263,7 +254,7 @@ const View = {
                 fd.append('data_prices', data_prices);
                 fd.append('data_category', data_category);
                 fd.append('data_trademark', data_trademark);
-                fd.append('data_metadata', data_metadata);
+                // fd.append('data_metadata', data_metadata);
                 fd.append('data_description', data_description);
                 fd.append('data_detail', data_detail);
                 fd.append('data_banner', data_banner[0]);
@@ -302,6 +293,66 @@ const View = {
             this.onChangeText(".name-append");
             ViewIndex.summerNote.init(".product-detail", "Mô tả đầy đủ", 400);
         }
+    },
+    sizeTab: {
+        onShow(name, callback){
+            $(document).on('click', '.main-tab-control', function() {
+                var id = $(this).attr('data-id');
+                if($(this).attr('atr').trim() == name) {
+                    callback(id);
+                }
+            });
+        },
+        doShow(resource){
+            $('.main-tab').removeClass('on-show');
+            $(`.main-tab[tab-name=${resource}]`).addClass('on-show');
+        },
+        render(data){
+            $(".size-table .data-row").remove()
+            data.map(v => {
+                $(".size-table")
+                    .append(`<tr class="data-row">
+                                <th>${v.size_name}</th>
+                                <th>${v.color_name}</th>
+                                <th><div class="view-data modal-control" style="cursor: pointer" atr="ColorDelete" data-id="${v.id}"><i class="feather-trash"></i></div></th>
+                            </tr>`)
+            })
+        },
+        setVal(id){
+            $("#tab-size").find(".product-id").val(id)
+            $("#tab-size").find(".data-size option").remove()
+            $("#tab-size").find(".data-color option").remove()
+
+            View.Size.map((v) => {
+                $("#tab-size").find(".data-size").append(`<option value="${v.id}">${v.name}</option>`)
+            })
+            View.Color.map((v) => {
+                $("#tab-size").find(".data-color").append(`<option value="${v.id}">${v.name}</option>`)
+            }) 
+        },
+        getVal(){
+            var fd = new FormData();
+            var required_data = [];
+            var onPushData = true;
+
+            var data_id             = $("#tab-size").find(".product-id").val();
+            var data_color           = $("#tab-size").find(".data-color").val();
+            var data_size           = $("#tab-size").find(".data-size").val();
+ 
+            fd.append('data_id', data_id);
+            fd.append('data_color', data_color);
+            fd.append('data_size', data_size);
+            return fd;
+        },
+        onPush(name, callback){ 
+            $(document).on('click', `#tab-size .push-data`, function() {
+                $(this).attr('atr').trim()
+                if($(this).attr('atr').trim() == name) {
+                    let fd = View.sizeTab.getVal()
+                    callback(fd);
+                }
+            }); 
+        },
     },
 
     modals: {
@@ -372,6 +423,47 @@ const View = {
 };
 (() => {
     View.init();
+
+    View.sizeTab.onShow("Add", (id) => {
+        View.sizeTab.doShow("Size");
+        View.sizeTab.setVal(id);
+        Api.Product.getSize(id)
+            .done(res => {
+                View.sizeTab.render(res.data)
+            })
+            .fail(err => { ViewIndex.helper.showToastError('Error', 'Có lỗi sảy ra'); })
+            .always(() => { });
+    })
+    View.modals.onControl("ColorDelete", (id) => {
+        var resource = View.modals.Delete.resource;
+        View.modals.onShow(resource);
+        View.modals.Delete.onPush("Push", () => {
+            ViewIndex.helper.showToastProcessing('Processing', 'Đang xóa!');
+            Api.Product.DeleteColor(id)
+                .done(res => {
+                    ViewIndex.helper.showToastSuccess('Success', 'Xóa thành công !');
+                     View.mainTab.onShow("Main");
+                })
+                .fail(err => { ViewIndex.helper.showToastError('Error', 'Có lỗi sảy ra'); })
+                .always(() => { });
+            View.modals.onHide(resource)
+            View.modals.Delete.setDefaul();
+        })
+    })
+
+    View.sizeTab.onPush("CreateSize", (fd) => {
+        Api.Product.CreateDetail(fd)
+            .done(res => {
+                if (res.message == 200) {
+                    ViewIndex.helper.showToastSuccess('Success', 'Tạo thành công !');
+                     View.mainTab.onShow("Main");
+                }else{
+                    ViewIndex.helper.showToastError('Error', 'Đã tồn tại !');
+                } 
+            })
+            .fail(err => { ViewIndex.helper.showToastError('Error', 'Có lỗi sảy ra'); })
+            .always(() => { });
+    })
 
     View.mainTab.onControl("Create", () => {
         Api.Category.GetAll()
@@ -474,6 +566,24 @@ const View = {
 
     function init(){
         getData();
+        getSize();
+        getColor();
+    }
+    function getSize(){
+        Api.Size.GetAll()
+            .done(res => {
+                View.Size = res.data
+            })
+            .fail(err => { ViewIndex.helper.showToastError('Error', 'Có lỗi sảy ra'); })
+            .always(() => { });
+    }
+    function getColor(){
+        Api.Color.GetAll()
+            .done(res => {
+                View.Color = res.data
+            })
+            .fail(err => { ViewIndex.helper.showToastError('Error', 'Có lỗi sảy ra'); })
+            .always(() => { });
     }
 
     function getData(){

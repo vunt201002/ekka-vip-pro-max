@@ -1,4 +1,6 @@
 const View = {
+    Size: [],
+    ItemSelect: null,
     Description: {
         render(data){
             var cards = localStorage.getItem("card") == null ? "" : localStorage.getItem("card").split("-");
@@ -19,11 +21,49 @@ const View = {
             $(".product-prices").append(prices)
             $(".countdown-time").attr("data-countime", data.discount_time) 
 
-            var size = JSON.parse(data.metadata).size.map(v => `<li><span>${v}</span></li>`).join("")
-            var color = JSON.parse(data.metadata).color.map(v => `<li><span style="background-color: ${v};"><p style="visibility: hidden">${v}</p></span></li>`).join("")
-            $(".product-size").append(size)
-            $(".product-color").append(color)
+            // var size = JSON.parse(data.metadata).size.map(v => `<li><span>${v}</span></li>`).join("")
+            // var color = JSON.parse(data.metadata).color.map(v => `<li><span style="background-color: ${v};"><p style="visibility: hidden">${v}</p></span></li>`).join("")
+            // $(".product-size").append(size)
+            // $(".product-color").append(color)
             View.countdown.render()
+        }
+    },
+    Color: {
+        render(data){
+            let visible = []
+            data.map(v => {
+                if (visible.includes(v.size_name)) {
+
+                }else{
+                    visible.push(v.size_name)
+                }
+            })
+            visible.map(v => {
+                $(".product-size").append(`<li value="${v}"><span>${v}</span></li>`)
+            })
+        },
+        renderColor(name){
+            $(".product-color li").remove()
+            View.Size.map(v => {
+                if (v.size_name == name) $(".product-color").append(`<li value="${v.color_id}"><span style="background-color: ${v.color_hex};"><p style="visibility: hidden">${v.color_name}</p></span></li>`)
+            })
+        },
+        isSelectSize(){
+            $(document).on('click', `.product-size li`, function(event) { 
+                View.Color.renderColor($(this).attr("value"))
+            });
+        },
+        isSelectColor(){
+            $(document).on('click', `.product-color li`, function(event) {
+                let color_id = $(this).attr("value");
+                let size_name = $('.product-size li.active').attr("value");
+                View.Size.map(v => {
+                    if (v.color_id == color_id && v.size_name == size_name){
+                        View.ItemSelect = v.id
+                    }
+                })
+                console.log(View.ItemSelect);
+            });
         }
     },
     countdown: {
@@ -108,8 +148,7 @@ const View = {
             var cards = localStorage.getItem("card") == null ? "" : localStorage.getItem("card").split("-");
             data.map(v => {
                 var image           = v.images.split(",")[0];
-                var size = JSON.parse(v.metadata).size.map(v => `<li><a href="#" class="ec-opt-sz">${v}</a></li>`).join("")
-                var color = JSON.parse(v.metadata).color.map(v => `<li><a href="#" class="ec-opt-clr-img" ><span style="background-color: ${v};"></span></a></li>`).join("")
+
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
@@ -130,19 +169,7 @@ const View = {
                                     ${discount_value}
                                     <span class="new-price">${real_prices} đ</span>
                                 </span>
-                                <div class="ec-pro-option">
-                                    <div class="ec-pro-color">
-                                        <span class="ec-pro-opt-label">Color</span>
-                                        <ul class="ec-opt-swatch ec-change-img">
-                                            ${color}
-                                        </ul>
-                                    </div>
-                                    <div class="ec-pro-size">
-                                        <span class="ec-pro-opt-label">Size</span>
-                                        <ul class="ec-opt-size">
-                                            ${size}
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -192,6 +219,13 @@ const View = {
         }
     }
 
+    View.Color.isSelectSize(() => {
+        console.log(123);
+    })
+    View.Color.isSelectColor(() => {
+        console.log(123);
+    })
+
     $(document).on('click', '.product-size li', function() {
         $(".product-size li").removeClass("active")
         $(this).addClass("active")
@@ -206,8 +240,10 @@ const View = {
     function getProduct(){
         Api.Product.GetOne(View.URL.get("id"))
             .done(res => {
-                View.Images.render_list(res.data[0].images);
-                View.Description.render(res.data[0]);
+                View.Images.render_list(res.data.item[0].images);
+                View.Description.render(res.data.item[0]);
+                View.Size = res.data.size
+                View.Color.render(res.data.size);
             })
             .fail(err => {  })
             .always(() => { });
@@ -215,7 +251,6 @@ const View = {
     function getRelatedProduct(){
         Api.Product.GetRelated(View.URL.get("id"))
             .done(res => {
-                // console.log(res);
                 View.RelatedProduct.render(res.data);
             })
             .fail(err => {  })

@@ -1,22 +1,16 @@
 const View = {
     product: [],
+    productSize: [],
     tableData: {
         __generateDTRow(data){
             return [
-                data.product_id,
-                data.name,
+                `${data.product_name}-${data.size_name}-${data.color_name}`, 
                 ViewIndex.table.formatNumber(data.quantity),
-                ViewIndex.table.formatNumber(data.prices) + ` đ`,
+                ViewIndex.table.formatNumber(data.pending),
             ]
         },
         init(){
             var row_table = [
-                    {
-                        title: 'ID',
-                        name: 'name',
-                        orderable: true,
-                        width: '5%',
-                    },
                     {
                         title: 'Tên sản phẩm',
                         name: 'name',
@@ -28,7 +22,7 @@ const View = {
                         orderable: true,
                     },
                     {
-                        title: 'Giá bán',
+                        title: 'Chờ giao hàng',
                         name: 'name',
                         orderable: true,
                     },
@@ -103,7 +97,7 @@ const View = {
             var list_classify = $( `${resource} .item-product` );
             list_classify.each(function( index ) {
                 var type_item       = {};
-                type_item.item      = $(this).find(".data-item").val()
+                type_item.item      = $(this).find(".data-size-item").val()
                 type_item.quantity  = $(this).find(".data-quantity").val() 
                 type_item.price     = $(this).find(".data-price").val() 
                 if (type_item.quantity) data_return.push(type_item)
@@ -115,22 +109,51 @@ const View = {
                 <div class="item-product row m-b-10">
                     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                         <select name="" class="form-control category-list data-item">
+                            <option value="0">------</option>
                             ${View.product.map(v => {
                                 return `<option value="${v.id}">${v.id}-${v.name}</option>`
                             }).join("")}
                         </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                        <input type="text" class="form-control type-number data-quantity" placeholder="Số lượng">
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                        <input type="text" class="form-control type-number data-price" placeholder="Đơn giá">
+                        <select name="" class="form-control data-size-item">
+                            <option value="0">------</option>
+                        </select>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <input type="text" class="form-control type-number data-quantity" placeholder="Số lượng">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                        <input type="text" class="form-control type-number data-price" placeholder="Đơn giá">
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1">
                         <button class="btn btn-danger item-remove" atr="Item Delete"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
             `);
+        },
+        reRender(father, id){
+            $(father).find(".data-size-item option").remove();
+            if (id != 0) {
+                if (View.productSize.length == 0) {
+                    $(father).find('.data-size-item').append(`<option value="0">------</option>`)
+                }else{
+                    View.productSize.map(v => {
+                        if (v.product_id == id) {
+                            $(father).find('.data-size-item').append(`<option value="${v.id}">${v.color_name}-${v.size_name}</option>`)
+                        }
+                    })
+                } 
+            }else{
+                $(father).find('.data-size-item').append(`<option value="0">------</option>`)
+            }
+        },
+        onChange(){
+            $(document).on('change', `.category-list`, function() {
+                let father = $(this).parent().parent()
+                let value = $(this).val()
+                View.Item.reRender(father, value)
+            });
         },
         onCreate(resource, name){
             $(document).on('click', `${resource} .item-create`, function() {
@@ -231,7 +254,7 @@ const View = {
                 data.map(v => {
                     $(".sub-warehouse tbody")
                         .append(`<tr>
-                            <td>${v.name}</td>
+                            <td>${v.product_name}-${v.size_name}-${v.color_name}</td>
                             <td>${ViewIndex.table.formatNumber(v.quantity)}</td>
                             <td>${ViewIndex.table.formatNumber(v.price)} đ</td>
                             <td>${ViewIndex.table.formatNumber(v.quantity * v.price)} đ</td>
@@ -287,9 +310,10 @@ const View = {
             .always(() => { }); 
     })
  
-    function init(){
-        getHistory();
-        getProduct();
+    async function init(){
+        await getHistory();
+        await getProduct();
+        await getProductSize();
     } 
     View.TabData.onChange("Item", () => {
         View.tableData.init();
@@ -298,6 +322,10 @@ const View = {
     View.TabData.onChange("History", () => {
         View.tableHistory.init();
         getHistory()
+    })
+
+    View.Item.onChange(() => {
+        console.log(123);
     })
 
     function getData(){
@@ -330,6 +358,14 @@ const View = {
         Api.Product.GetAll()
             .done(res => {
                 View.product = res.data;
+            })
+            .fail(err => { ViewIndex.helper.showToastError('Error', 'Có lỗi sảy ra'); })
+            .always(() => { });
+    }
+    function getProductSize(){
+        Api.Product.GetAllSize()
+            .done(res => {
+                View.productSize = res.data;
             })
             .fail(err => { ViewIndex.helper.showToastError('Error', 'Có lỗi sảy ra'); })
             .always(() => { });

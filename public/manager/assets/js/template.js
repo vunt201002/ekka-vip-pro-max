@@ -19,6 +19,54 @@ const Template = {
             return `<div class="wrapper d-flex justify-center"><img src="/manager/images_global/funny.gif" alt=""></div>`
         }
     },
+    Size: {
+        Create(){
+            return `<div class="error-log"></div>
+                    <div class="form-group">
+                        <label for="name">Tên kích thước</label>
+                        <input type="text" class="form-control data-name" id="name" placeholder="Tên kích thước">
+                    </div>`
+        },
+        Update(){
+            return `<input type="hidden" class="form-control data-id" required="">
+                    <div class="error-log"></div>
+                    <div class="form-group">
+                        <label for="name">Tên kích thước</label>
+                        <input type="text" class="form-control data-name" id="name" placeholder="Tên kích thước">
+                    </div>`
+        },
+        Delete(){
+            return `<div class="wrapper d-flex justify-center"><img src="/manager/images_global/funny.gif" alt=""></div>`
+        }
+    },
+    Color: {
+        Create(){
+            return `<div class="error-log"></div>
+                    <div class="form-group">
+                        <label for="name">Tên kích thước</label>
+                        <input type="text" class="form-control data-name" id="name" placeholder="Tên kích thước">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Chọn màu</label>
+                        <input type="color" class="form-control data-hex" id="color"  >
+                    </div>`
+        },
+        Update(){
+            return `<input type="hidden" class="form-control data-id" required="">
+                    <div class="error-log"></div>
+                    <div class="form-group">
+                        <label for="name">Tên kích thước</label>
+                        <input type="text" class="form-control data-name" id="name" placeholder="Tên kích thước">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Chọn màu</label>
+                        <input type="color" class="form-control data-hex" id="color"  >
+                    </div>`
+        },
+        Delete(){
+            return `<div class="wrapper d-flex justify-center"><img src="/manager/images_global/funny.gif" alt=""></div>`
+        }
+    },
     Trademark: {
         Create(){
             return `<div class="error-log"></div>
@@ -228,7 +276,7 @@ const Template = {
 	},
     Warehouse: {
         Create(){
-            return `<div class="row warehouse-modal">
+            return `<div class="warehouse-modal">
                         <div class="item-list"> </div>
                         <button type="button" class="btn btn-success item-create" atr="Item Create">Tạo mới</button>
                     </div>`

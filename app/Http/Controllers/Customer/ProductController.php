@@ -29,7 +29,12 @@ class ProductController extends Controller
     }
     // Lấy ra 1 sản phẩm
     public function get_one($id){
-        $data = $this->product->get_one($id);
+        $product = $this->product->get_one($id);
+        $size = $this->product->get_size($id);
+        $data = [
+            "item" => $product,
+            "size" => $size,
+        ]; 
         return $this->product->send_response(200, $data, null);
     }
     // Lấy ra sản phẩm theo request

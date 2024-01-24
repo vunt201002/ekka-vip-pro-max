@@ -47,13 +47,65 @@ class ProductController extends Controller
         $data = $this->product->get_one($id);
         return $this->product->send_response(200, $data, null);
     }
+    public function getSize(Request $request){
+        $id = $request->id;
+
+        $item = DB::table('product_detail')
+            ->select("product_detail.*", "color.name as color_name", "size.name as size_name")
+            ->leftjoin("color", "color.id", "=", "color_id")
+            ->leftjoin("size", "size.id", "=", "size_id")
+            ->where("product_detail.product_id", "=", $id)
+            ->get(); 
+
+        return $this->product->send_response(200, $item, null); 
+    }
+    public function deleteColor($id){
+        DB::table('product_detail')->where('id', '=', $id)->delete();
+
+        return $this->product->send_response(200, null, null); 
+    }
+    public function getProductSize(){ 
+
+        $item = DB::table('product_detail')
+            ->select("product_detail.*", "color.name as color_name", "size.name as size_name")
+            ->leftjoin("color", "color.id", "=", "color_id")
+            ->leftjoin("size", "size.id", "=", "size_id") 
+            ->get(); 
+
+        return $this->product->send_response(200, $item, null); 
+    }
+
+
+    public function createDetail(Request $request){
+
+        $id = $request->data_id;
+        $size = $request->data_size;
+        $color = $request->data_color;
+
+        $item = DB::table('product_detail')->where([["product_id", "=", $id], ["size_id", "=", $size], ["color_id", "=", $color]])->first(); 
+
+        if ($item) {
+            return $this->product->send_response(500, null, null);
+        }else{
+            $data = [
+                "product_id" => $id,
+                "size_id" => $size,
+                "color_id" => $color,
+            ];
+            DB::table('product_detail')->insert($data);
+
+            return $this->product->send_response(200, null, null);
+        }
+
+    }
+
     public function store(Request $request){ 
         $data = [
             "category_id"   => $request->data_category,
             "trademark_id"   => $request->data_trademark,
             "name"          => $request->data_name,
             "slug"          => $this->product->to_slug($request->data_name),
-            "metadata"      => $request->data_metadata,
+            // "metadata"      => $request->data_metadata,
             "description"   => nl2br($request->data_description ?? ""),
             "detail"        => $request->data_detail ?? "",
             "prices"        => $request->data_prices,
@@ -77,7 +129,7 @@ class ProductController extends Controller
             "trademark_id"   => $request->data_trademark,
             "name"          => $request->data_name,
             "slug"          => $this->product->to_slug($request->data_name),
-            "metadata"      => $request->data_metadata,
+            // "metadata"      => $request->data_metadata,
             "description"   => nl2br($request->data_description ?? ""),
             "detail"        => $request->data_detail ?? "",
             "prices"        => $request->data_prices,

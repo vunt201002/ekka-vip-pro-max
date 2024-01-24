@@ -17,12 +17,16 @@ class WarehouseRepository extends BaseRepository implements RepositoryInterface
         $this->model = $model;
     } 
     public function get_item_all(){
-        $sql = "SELECT warehouse.*, 
-                    product.name, 
-                    product.prices 
+        $sql = "SELECT warehouse.*, product.name as product_name, size.name as size_name, color.name as color_name, product_detail.*
                 FROM warehouse
+                LEFT JOIN product_detail
+                ON product_detail.id = warehouse.product_id
                 LEFT JOIN product
-                ON product.id = warehouse.product_id;";
+                ON product.id = product_detail.product_id
+                LEFT JOIN size
+                ON size.id = product_detail.size_id
+                LEFT JOIN color
+                ON color.id = product_detail.color_id";
         return DB::select($sql);
     }
     public function get_history_all(){
@@ -44,10 +48,16 @@ class WarehouseRepository extends BaseRepository implements RepositoryInterface
         return DB::select($sql_getall);
     }
     public function get_ware_one($id){
-        $sql = "SELECT warehouse_history_detail.* , product.name, product.images
+        $sql = "SELECT warehouse_history_detail.* , product.name as product_name, size.name as size_name, color.name as color_name, product_detail.*
                     FROM warehouse_history_detail 
+                    LEFT JOIN product_detail
+                    ON product_detail.id = warehouse_history_detail.product_id
                     LEFT JOIN product
-                    ON product.id = warehouse_history_detail.product_id
+                    ON product.id = product_detail.product_id
+                    LEFT JOIN size
+                    ON size.id = product_detail.size_id
+                    LEFT JOIN color
+                    ON color.id = product_detail.color_id
                     WHERE warehouse_history_id = ".$id;
         return DB::select($sql);
 
@@ -68,6 +78,13 @@ class WarehouseRepository extends BaseRepository implements RepositoryInterface
     public function update_item($item_id, $quantity){
         $sql_checkitem = "UPDATE warehouse
                             SET quantity =".$quantity."
+                            WHERE product_id = ".$item_id;
+        DB::select($sql_checkitem);
+    }
+
+    public function update_item_ship($item_id, $quantity){
+        $sql_checkitem = "UPDATE warehouse
+                            SET pending =".$quantity."
                             WHERE product_id = ".$item_id;
         DB::select($sql_checkitem);
     }

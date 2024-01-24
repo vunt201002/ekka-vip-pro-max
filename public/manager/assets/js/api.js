@@ -8,6 +8,8 @@ const Api = {
     Statistic: {},
     Voucher: {},
     Shipper: {},
+    Size: {},
+    Color: {},
 
 };
 (() => {
@@ -46,6 +48,66 @@ const Api = {
     });
     Api.Category.Delete = (id) => $.ajax({
         url: `/apip/category/delete/${id}`,
+        method: 'GET',
+    });
+})();
+
+//Size
+(() => {
+    Api.Size.GetAll = () => $.ajax({
+        url: `/apip/size/get`,
+        method: 'GET',
+    });
+    Api.Size.Store = (data) => $.ajax({
+        url: `/apip/size/store`,
+        method: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+    });
+    Api.Size.getOne = (id) => $.ajax({
+        url: `/apip/size/get-one/${id}`,
+        method: 'GET',
+    });
+    Api.Size.Update = (data) => $.ajax({
+        url: `/apip/size/update`,
+        method: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+    });
+    Api.Size.Delete = (id) => $.ajax({
+        url: `/apip/size/delete/${id}`,
+        method: 'GET',
+    });
+})();
+
+//Color
+(() => {
+    Api.Color.GetAll = () => $.ajax({
+        url: `/apip/color/get`,
+        method: 'GET',
+    });
+    Api.Color.Store = (data) => $.ajax({
+        url: `/apip/color/store`,
+        method: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+    });
+    Api.Color.getOne = (id) => $.ajax({
+        url: `/apip/color/get-one/${id}`,
+        method: 'GET',
+    });
+    Api.Color.Update = (data) => $.ajax({
+        url: `/apip/color/update`,
+        method: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+    });
+    Api.Color.Delete = (id) => $.ajax({
+        url: `/apip/color/delete/${id}`,
         method: 'GET',
     });
 })();
@@ -135,10 +197,35 @@ const Api = {
         url: `/apip/product/get`,
         method: 'GET',
     });
+    Api.Product.GetAllSize = () => $.ajax({
+        url: `/apip/product/get-all-size`,
+        method: 'GET',
+    });
+
     Api.Product.GetFree = () => $.ajax({
         url: `/apip/product/getfree`,
         method: 'GET',
     }); 
+    Api.Product.CreateDetail = (data) => $.ajax({
+        url: `/apip/product/createDetail`,
+        method: 'POST',
+        data: data,
+        contentType: false,
+        processData: false,
+    }); 
+
+    Api.Product.getSize = (id) => $.ajax({
+        url: `/apip/product/get-size`,
+        method: 'GET',
+        dataType: 'json',
+        data: {
+            id: id ?? '',
+        }
+    }); 
+    Api.Product.DeleteColor = (id) => $.ajax({
+        url: `/apip/product/delete-color/${id}`,
+        method: 'GET',
+    });
 
     Api.Product.GetDiscount = () => $.ajax({
         url: `/apip/product/get-discount`,

@@ -168,7 +168,6 @@ const View = {
                 $("select.order-status option").css({
                     "display": "none"
                 })
-                console.log(status_now);
                 if (status_now == 0) {
                     $("select.order-status option").eq(1).css({ "display": "block" })
                     $("select.order-status option").eq(2).css({ "display": "block" })
@@ -203,7 +202,7 @@ const View = {
                     $(".data-list")
                         .append(`<tr>
                                     <td>${v.product_id}</td>
-                                    <td>${v.name} - Size: ${v.size} - Color: ${v.color}</td>
+                                    <td>${v.name} - Size: ${v.size_name} - Color: ${v.color_name}</td>
                                     <td>${v.quantity}</td>
                                     <td>${v.price}</td>
                                     <td>${v.discount} %</td>
@@ -211,6 +210,10 @@ const View = {
                                     <td>${v.warehouse_quatity ?? 0}</td>
                                     <td><div class="badge ${order_status[v.suborder_status]}">${order_status_title[v.suborder_status]}</div></td>
                                 </tr>`)
+                        console.log(v.warehouse_quatity);
+                    if (!v.warehouse_quatity) {
+                        $("select.order-status option").eq(2).css({ "display": "none" })
+                    }
                 })
                 $(".order-status").val(data.data_order[0].order_status)
                 if (data.shipper.length > 0) {

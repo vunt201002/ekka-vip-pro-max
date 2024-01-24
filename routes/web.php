@@ -95,6 +95,12 @@ Route::middleware(['AuthAdmin:admin'])->group(function () {
         
         Route::get('/', 'Admin\DisplayController@statistic')->name('admin.statistic');
 
+        Route::prefix('size')->group(function () {
+            Route::get('/', 'Admin\SizeController@index')->name('admin.size.index');
+        });
+        Route::prefix('color')->group(function () {
+            Route::get('/', 'Admin\ColorController@index')->name('admin.color.index');
+        });
         Route::prefix('category')->group(function () {
             Route::get('/', 'Admin\CategoryController@index')->name('admin.category.index');
         });
@@ -139,6 +145,22 @@ Route::middleware(['AuthAdmin:admin'])->group(function () {
             Route::get('/delete/{id}', 'Admin\TrademarkController@delete')->name('admin.trademark.delete');
         });
 
+        Route::prefix('size')->group(function () {
+            Route::get('get', 'Admin\SizeController@get')->name('admin.size.get');
+            Route::get('/get-one/{id}', 'Admin\SizeController@get_one')->name('admin.size.get_one');
+            Route::post('store', 'Admin\SizeController@store')->name('admin.size.store');
+            Route::post('/update', 'Admin\SizeController@update')->name('admin.size.update');
+            Route::get('/delete/{id}', 'Admin\SizeController@delete')->name('admin.size.delete');
+        });
+
+        Route::prefix('color')->group(function () {
+            Route::get('get', 'Admin\ColorController@get')->name('admin.color.get');
+            Route::get('/get-one/{id}', 'Admin\ColorController@get_one')->name('admin.color.get_one');
+            Route::post('store', 'Admin\ColorController@store')->name('admin.color.store');
+            Route::post('/update', 'Admin\ColorController@update')->name('admin.color.update');
+            Route::get('/delete/{id}', 'Admin\ColorController@delete')->name('admin.color.delete');
+        });
+
         Route::prefix('shipper')->group(function () {
             Route::get('get', 'Admin\ShipperController@get')->name('admin.shipper.get');
             Route::get('/get-one/{id}', 'Admin\ShipperController@get_one')->name('admin.shipper.get_one');
@@ -151,7 +173,11 @@ Route::middleware(['AuthAdmin:admin'])->group(function () {
             Route::get('get', 'Admin\ProductController@get')->name('admin.product.get');
             Route::get('getfree', 'Admin\ProductController@getfree')->name('admin.product.getfree');
             Route::get('get-discount', 'Admin\ProductController@get_discount')->name('admin.product.get_discount');
+            Route::get('get-size', 'Admin\ProductController@getSize')->name('admin.product.getSize');
+            Route::get('get-all-size', 'Admin\ProductController@getProductSize')->name('admin.product.getProductSize');
+            Route::get('/delete-color/{id}', 'Admin\ProductController@deleteColor')->name('admin.product.deleteColor');
 
+            Route::post('createDetail', 'Admin\ProductController@createDetail')->name('admin.product.createDetail');
             Route::get('/get-one/{id}', 'Admin\ProductController@get_one')->name('admin.product.get_one');
             Route::post('store', 'Admin\ProductController@store')->name('admin.product.store');
             Route::put('/update-trending', 'Admin\ProductController@update_trending')->name('admin.product.trending.update');

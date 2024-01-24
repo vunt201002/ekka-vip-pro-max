@@ -72,14 +72,11 @@
     <div class="modal-dialog warehouse-modal-view">
         <div class="modal-content">
             <div class="modal-header justify-content-between align-items-center">
-                <h5 class="modal-title"> </h5>
             </div>
             <div class="modal-body scrollable ps-container ps-theme-default">
                 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default close-modal m-r-10" ></button>
-                <button type="button" class="btn btn-primary push-modal" atr="Push"></button>
             </div>
         </div>
     </div>            

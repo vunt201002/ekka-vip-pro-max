@@ -63,9 +63,10 @@ class OrderController extends Controller
             $this->order_detail->update_status($request->data_id);
             $data_sub = $this->order_detail->get_full_order($request->data_id);
             foreach ($data_sub as $key => $value) {
-                $warehouse_item = $this->warehouse->warehouse_get_item($value->product_id);
+                $warehouse_item = $this->warehouse->warehouse_get_item($value->product_full);
                 if (count($warehouse_item) > 0 && $warehouse_item[0]->quantity > $value->quantity) {
-                    $this->warehouse->update_item($value->product_id, $warehouse_item[0]->quantity -= $value->quantity);
+                    $this->warehouse->update_item($value->product_full, $warehouse_item[0]->quantity -= $value->quantity);
+                    $this->warehouse->update_item_ship($value->product_full, $warehouse_item[0]->pending += $value->quantity);
                 }else{
                     return $this->order->send_response(500, null, null);
                 }
@@ -78,12 +79,9 @@ class OrderController extends Controller
             $this->order_detail->update_status($request->data_id);
             $data_sub = $this->order_detail->get_full_order($request->data_id);
             foreach ($data_sub as $key => $value) {
-                $warehouse_item = $this->warehouse->warehouse_get_item($value->product_id);
-                if (count($warehouse_item) > 0 && $warehouse_item[0]->quantity > $value->quantity) {
-                    $this->warehouse->update_item($value->product_id, $warehouse_item[0]->quantity += $value->quantity);
-                }else{
-                    return $this->order->send_response(500, null, null);
-                }
+                $warehouse_item = $this->warehouse->warehouse_get_item($value->product_full); 
+                $this->warehouse->update_item($value->product_full, $warehouse_item[0]->quantity += $value->quantity);
+                $this->warehouse->update_item_ship($value->product_full, $warehouse_item[0]->pending -= $value->quantity);
             }
         }
         $this->order->update(["order_status" => $request->data_status], $request->data_id);
