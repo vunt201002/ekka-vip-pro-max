@@ -208,7 +208,6 @@ Route::middleware(['AuthAdmin:admin'])->group(function () {
             Route::get('get-total', 'Admin\OrderController@get_total')->name('admin.order.get_total');
             Route::get('get-best-sale', 'Admin\OrderController@get_best_sale')->name('admin.order.get_best_sale');
             Route::get('get-customer', 'Admin\OrderController@get_customer')->name('admin.order.get_customer');
-
         });
 
         Route::prefix('voucher')->group(function () {

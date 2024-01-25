@@ -56,7 +56,7 @@ class OrderRepository extends BaseRepository implements RepositoryInterface
     public function get_turnover(){
         $sql = " SELECT sum(total) as total
                     FROM order_time
-                    WHERE order_status = 3";
+                    WHERE order_status = 4";
         return DB::select($sql);
     }
     public function get_item_sell(){
@@ -64,19 +64,19 @@ class OrderRepository extends BaseRepository implements RepositoryInterface
                     FROM order_time
                     LEFT JOIN order_detail
                     ON order_time.id = order_detail.order_id
-                    WHERE order_status = 3";
+                    WHERE order_status = 4";
         return DB::select($sql);
     }
     public function get_order_time(){
         $sql = " SELECT count(*) as total
                     FROM order_time
-                    WHERE order_status = 3";
+                    WHERE order_status = 4";
         return DB::select($sql);
     }
     public function get_customer_buy(){
         $sql = " SELECT count(customer_id) as total
                     FROM order_time
-                    WHERE order_status = 3 AND status_customer = 1
+                    WHERE order_status = 4 AND status_customer = 1
                     GROUP BY customer_id";
         return DB::select($sql);
     }
