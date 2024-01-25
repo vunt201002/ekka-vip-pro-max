@@ -6,10 +6,10 @@ const View = {
             data.map(v => {
                 var image           = v.images.split(",")[0];
                 // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
-                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (data.prices - (data.prices / 100 * data.discount)));
+                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (v.prices - (v.prices / 100 * v.discount)));
                 var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
                 var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
-                 
+                
                  
                 $("#list-view .products").append(`
                     <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content product">
