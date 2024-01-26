@@ -68,6 +68,10 @@ const Api = {
         url: `/customer/apip/product/get-one-cart/${id}`,
         method: 'GET',
     });
+    Api.Product.HotProduct = (id) => $.ajax({
+        url: `/customer/apip/product/get-hot-product`,
+        method: 'GET',
+    });
 
     Api.Product.GetSearch = (data) => $.ajax({
         url: `/customer/apip/product/get-search`,

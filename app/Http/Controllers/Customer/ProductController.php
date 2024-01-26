@@ -74,6 +74,10 @@ class ProductController extends Controller
         $data = $this->product->get_trending();
         return $this->product->send_response(200, $data, null);
     }
+    public function host_product(){
+        $data = $this->product->host_product();
+        return $this->product->send_response(200, $data, null);
+    }
 
     
     public function get_search(Request $request){

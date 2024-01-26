@@ -100,6 +100,22 @@
         
     </section>
 
+    <!-- New Product Start -->
+    <section class="section ec-new-product section-space-p">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="section-title">
+                        <h2 class="ec-bg-title">Sản phẩm bán chạy nhất</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row hot-product">
+
+            </div>
+        </div>
+    </section>
+    <!-- New Product end -->
 
 
     <!-- New Product Start -->

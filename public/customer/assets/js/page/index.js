@@ -87,6 +87,38 @@ const View = {
             })
             $(".new-product").append(`<div class="col-sm-12 shop-all-btn"><a href="/category?sort=1">Xem thêm</a></div>`)
         },
+        hotProduct(data){
+            data.map(v => {
+                var image           = v.images.split(",")[0];
+
+                var discount = v.discount == 0 ? "" : `<span class="percentage">${v.discount}%</span><span class="flags"> <span class="sale">Sale</span> </span>`
+                // var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : v.prices - (v.prices*v.discount/100));
+                var real_prices     = View.formatNumber(v.discount == 0 ? v.prices : (v.prices - (v.prices / 100 * v.discount)));
+                var discount_value = v.discount == 0 ? "" : `<span class="old-price">${View.formatNumber(v.prices)} đ</span>`
+                $(".hot-product").append(`
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" >
+                        <div class="ec-product-inner">
+                            <div class="ec-pro-image-outer">
+                                <div class="ec-pro-image">
+                                    <a href="/product?id=${v.id}" class="image">
+                                        <img class="main-image" src="${image}" alt="Product" />
+                                    </a>
+                                    ${discount}
+                                </div>
+                            </div>
+                            <div class="ec-pro-content">
+                                <h5 class="ec-pro-title"><a href="/product?id=${v.id}">${v.name}</a></h5>
+                                <span class="ec-price">
+                                    ${discount_value}
+                                    <span class="new-price">${real_prices} đ</span>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>`)
+            })
+            $(".new-product").append(`<div class="col-sm-12 shop-all-btn"><a href="/category?sort=1">Xem thêm</a></div>`)
+        },
         renderBestSale(data){
             // var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : data.prices - (data.prices*data.discount/100));
             var real_prices     = View.formatNumber(data.discount == 0 ? data.prices : data.discount);
@@ -190,6 +222,7 @@ const View = {
         getNewArrivals();
         getBestSale();
         getTrending();
+        getHotProduct()
     }
     View.Category.onChange((id) => {
         loadProductOnCategory(id)
@@ -220,6 +253,14 @@ const View = {
         Api.Product.BestSale()
             .done(res => {
                 if (res.data.length > 0) View.Product.renderBestSale(res.data[0]);
+            })
+            .fail(err => {  })
+            .always(() => { });
+    }
+    function getHotProduct(){
+        Api.Product.HotProduct()
+            .done(res => {
+                if (res.data.length > 0) View.Product.hotProduct(res.data);
             })
             .fail(err => {  })
             .always(() => { });

@@ -26,40 +26,7 @@ const View = {
                         </tr>`)
         })
     },
-    donut(data_customer){
-        var customer_new = []
-        var customer_back = []
-        data_customer.customer_new.map( v => {
-            if (v.total > 1) customer_back.push(v) 
-                else customer_new.push(v) 
-        })
-        $(".data-customer_new").html(customer_new.length)
-        $(".data-customer_back").html(customer_back.length)
-        $(".data-customer_free").html(data_customer.customer_free.length)
-        const donutChart = document.getElementById("donut-chart");
-        const donutCtx = donutChart.getContext('2d');
-        donutChart.height = 492;
-        const donutData = {
-            labels: ["Mới", "Quay lại", "Khác"],
-                datasets: [
-                {
-                    fill: true,
-                    backgroundColor: ["#05c9a7", "#886cff", "#ffc107"],
-                    pointBackgroundColor : ["#05c9a7", "#886cff", "#ffc107"],
-                    data: [customer_new.length, customer_back.length, data_customer.customer_free.length]
-                }
-            ]
-        };
-        const donutConfig = new Chart(donutCtx, {
-            type: 'doughnut',
-            data: donutData,
-            options: {
-                maintainAspectRatio: false,
-                hover: {mode: null},
-                cutoutPercentage: 45
-            }
-        });
-    },
+
     formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     },
@@ -117,9 +84,7 @@ const View = {
     function get_total(){
         Api.Statistic.getTotal().done(res => { View.render_total(res) })
         Api.Statistic.getBestSale().done(res => { View.render_sale(res) })
-        Api.Statistic.getCustomerBuy().done(res => { 
-            View.donut(res)
-          })
+        
     }
 
     init();

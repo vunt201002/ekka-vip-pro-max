@@ -81,9 +81,10 @@ class OrderRepository extends BaseRepository implements RepositoryInterface
         return DB::select($sql);
     }
     public function get_best_sale(){
-        $sql = " SELECT order_detail.product_id, 
+        $sql = "SELECT order_detail.product_id, 
                         sum(order_detail.quantity) as total, 
                         warehouse.quantity,
+                        product.id,
                         product.name,
                         product.images
                     FROM order_time
@@ -91,11 +92,18 @@ class OrderRepository extends BaseRepository implements RepositoryInterface
                     ON order_time.id = order_detail.order_id
                     LEFT JOIN warehouse
                     ON warehouse.product_id = order_detail.product_id
+                    LEFT JOIN product_detail
+                    ON product_detail.id = warehouse.product_id
                     LEFT JOIN product
-                    ON order_detail.product_id = product.id
-                    WHERE order_status = 3
+                    ON product.id = product_detail.product_id
+                    LEFT JOIN size
+                    ON size.id = product_detail.size_id
+                    LEFT JOIN color
+                    ON color.id = product_detail.color_id
+                    WHERE order_status = 4
                     GROUP BY order_detail.product_id, 
                             warehouse.quantity,
+                            product.id,
                             product.name,
                             product.images
                     ORDER BY total DESC LIMIT 5";

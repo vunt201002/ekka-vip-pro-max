@@ -111,7 +111,7 @@ class OrderController extends Controller
         return $data;
     }
     public function get_best_sale(){
-        $best_sale = $this->order->get_best_sale();
+        $best_sale = $this->order->get_best_sale(); 
         return $best_sale;
     }
     public function get_customer(){

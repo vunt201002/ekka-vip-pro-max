@@ -63,6 +63,7 @@ Route::prefix('customer')->group(function () {
             Route::get('get-one/{id}', 'Customer\ProductController@get_one')->name('customer.product.get.one');
             Route::get('get-trending', 'Customer\ProductController@get_trending')->name('customer.product.get.trending');
             Route::get('get-best-sale', 'Customer\ProductController@get_best_sale')->name('customer.product.get.best_sale');
+            Route::get('get-hot-product', 'Customer\ProductController@host_product')->name('customer.product.get.best_sale');
             Route::get('get-new-arrivals', 'Customer\ProductController@get_new_arrivals')->name('customer.product.get.new_arrivals');
             Route::get('get-with-category/{id}', 'Customer\ProductController@get_with_category')->name('admin.product.get_with_category');
         });
