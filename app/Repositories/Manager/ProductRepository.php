@@ -171,6 +171,8 @@ class ProductRepository extends BaseRepository implements RepositoryInterface
                         warehouse.quantity,
                         product.id,
                         product.name,
+                        product.discount,
+                        product.prices,
                         product.images
                     FROM order_time
                     LEFT JOIN order_detail
@@ -190,6 +192,8 @@ class ProductRepository extends BaseRepository implements RepositoryInterface
                             warehouse.quantity,
                             product.id,
                             product.name,
+                        product.discount,
+                        product.prices,
                             product.images
                     ORDER BY total DESC LIMIT 5";
         return DB::select($sql);

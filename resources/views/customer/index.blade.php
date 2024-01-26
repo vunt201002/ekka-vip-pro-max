@@ -107,6 +107,8 @@
                 <div class="col-md-12 text-center">
                     <div class="section-title">
                         <h2 class="ec-bg-title">Sản phẩm bán chạy nhất</h2>
+                        <h2 class="ec-title">Sản phẩm bán chạy nhất</h2>
+                        <p class="sub-title">Danh sách sản phẩm bán chạy</p>
                     </div>
                 </div>
             </div>
