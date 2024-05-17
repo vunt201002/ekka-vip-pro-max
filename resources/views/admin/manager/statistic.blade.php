@@ -83,7 +83,7 @@
         </div> 
 
         <div class="row">
-            <div class="col-xl-6">
+            <!-- <div class="col-xl-6">
                 <div class="card">
                     <div class="card-body">
         
@@ -98,9 +98,9 @@
 
                         <canvas id="barChart"></canvas>
         
-                    </div> <!-- end card-body-->
-                </div> <!-- end card-->
-            </div> <!-- end col -->
+                    </div>  
+                </div>  
+            </div>   -->
             <div class="col-xl-6">
                 <div class="card">
                     <div class="card-body">

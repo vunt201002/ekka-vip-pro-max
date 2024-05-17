@@ -9,7 +9,8 @@ const View = {
                 ViewIndex.table.formatNumber(data.prices) + ` đ`,
                 `<p>Danh mục: <span class="meta-item-table">${data.category_name ?? "Chưa có"}</span></p>
                 <p>Thương hiệu: <span class="meta-item-table">${data.trademark_name ?? "Chưa có"}</span></p>
-                <p>Còn lại: <span class="meta-item-table">${data.quantity == null || data.quantity == 0 ? "Hết hàng" : data.quantity}</span></p>`,
+                <p>Còn lại: <span class="meta-item-table">${data.quantity == null || data.quantity == 0 ? "Hết hàng" : data.quantity}</span></p>`
+                ,
                 data.images == "" ? null : data.images.split(",").map(v => {
                     return `<div class="image-table-preview" style="background-image: url('/${v}')"></div>`
                 }).join(""),
